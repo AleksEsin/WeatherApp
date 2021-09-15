@@ -10,10 +10,11 @@ pipeline {
                 label "develop"
             }
             steps {
-                unstash 'source'
                 echo " ============== start docker login =================="
-                dir ('.') {
-                	sh 'sudo docker run -p 8000:8000 weatherapp:v1'
+                withCredentials([usernamePassword(credentialsId: 'dockerhub_yesinaleksey', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
+                	sh """
+                    docker login -u $USERNAME -p $PASSWORD
+                    """
                 }
             }
         }
@@ -30,6 +31,18 @@ pipeline {
             }
         }
         
+        stage("docker push") {
+            agent {
+                label "production"
+            }
+            steps {
+                echo " ============== start pushing container =================="
+                dir ('.') {
+                	sh 'sudo docker push yesinaleksey/weatherapp:v1'
+                }
+            }
+        }
+        
         stage("deploy docker container") {
             agent {
                 label "production"
@@ -38,7 +51,7 @@ pipeline {
                 unstash 'source'
                 echo " ============== start deploying container =================="
                 dir ('.') {
-                	sh 'sudo docker run -p 8000:8000 weatherapp:v1'
+                	sh 'sudo docker run -p 8000:8000 yesinaleksey/weatherapp:v1'
                 }
             }
         }
