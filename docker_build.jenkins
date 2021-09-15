@@ -20,7 +20,7 @@ pipeline {
             steps {
                 echo " ============== start deploying container =================="
                 dir ('.') {
-                	sh 'sudo docker run -p 8000:8000 --name WEATHER weatherapp:v1'
+                	sh 'sudo docker run -d -p 8000:8000 --name WEATHER weatherapp:v1'
                 }
             }
         }
