@@ -5,6 +5,19 @@ properties([disableConcurrentBuilds()])
 pipeline {
     agent any
     stages {
+        stage("docker login") {
+            agent {
+                label "develop"
+            }
+            steps {
+                unstash 'source'
+                echo " ============== start deploying container =================="
+                dir ('.') {
+                	sh 'sudo docker run -p 8000:8000 weatherapp:v1'
+                }
+            }
+        }
+        
         stage("create docker image") {
             agent {
                 label "develop"
