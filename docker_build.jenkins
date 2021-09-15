@@ -6,6 +6,7 @@ pipeline {
     agent { 
         label 'prod'
         }
+    triggers { pollSCM('* * * *') }
     stages {
         stage("create docker image") {
             steps {
