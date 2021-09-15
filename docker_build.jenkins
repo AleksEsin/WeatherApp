@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage("create docker image") {
             agent {
-                label "dev"
+                label "develop"
             }
             steps {
                 echo " ============== start building image =================="
@@ -20,7 +20,7 @@ pipeline {
         
         stage("deploy docker container") {
             agent {
-                label "prod"
+                label "production"
             }
             steps {
                 unstash 'source'
