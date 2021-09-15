@@ -3,16 +3,30 @@
 properties([disableConcurrentBuilds()])
 
 pipeline {
-    agent { 
-        label 'prod'
-        }
-    triggers { pollSCM('* * * * *') }
+    agent any
     stages {
         stage("create docker image") {
+            agent {
+                label "dev"
+            }
             steps {
                 echo " ============== start building image =================="
                 dir ('.') {
                 	sh 'sudo docker build -t weatherapp:v1 .'
+                }
+                stash 'source'
+            }
+        }
+        
+        stage("deploy docker container") {
+            agent {
+                label "prod"
+            }
+            steps {
+                unstash 'source'
+                echo " ============== start deploying container =================="
+                dir ('.') {
+                	sh 'docker run -p 8000:8000 weatherapp:v1'
                 }
             }
         }
