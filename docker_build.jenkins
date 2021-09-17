@@ -54,5 +54,18 @@ pipeline {
                 }
             }
         }
+        
+        stage("stop docker container") {
+            agent {
+                label "prod"
+            }
+            steps { 
+                echo " ============== start stoping container =================="
+                dir ('.') {
+                    sh 'sleep 30'
+                	sh 'docker stop yesinaleksey/weatherapp:v1'
+                }
+            }
+        }
     }
 }
