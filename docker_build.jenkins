@@ -33,7 +33,7 @@ pipeline {
         
         stage("docker push") {
             agent {
-                label "prod"
+                label "dev"
             }
             steps {
                 echo " ============== start pushing container =================="
