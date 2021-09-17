@@ -18,7 +18,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage("create docker image") {
             agent {
                 label "dev"
@@ -30,40 +30,44 @@ pipeline {
                 }
             }
         }
-        
+
         stage("docker push") {
             agent {
                 label "dev"
             }
             steps {
-                echo " ============== start pushing container =================="
+                echo "============== start pushing container =================="
                 dir ('.') {
                 	sh 'docker push yesinaleksey/weatherapp:v1'
                 }
+                echo "============== start removing container from dev.server =================="
+                dir ('.') {
+                  sh 'docker rmi yesinaleksey/weatherapp:v1'
+                }
             }
         }
-        
+
         stage("deploy docker container") {
             agent {
                 label "prod"
             }
-            steps { 
+            steps {
                 echo " ============== start deploying container =================="
                 dir ('.') {
                 	sh 'docker run -p 8000:8000 --name APP -d yesinaleksey/weatherapp:v1'
                 }
             }
         }
-        
+
         stage("stop docker container") {
             agent {
                 label "prod"
             }
-            steps { 
+            steps {
                 echo " ============== start stoping container =================="
                 dir ('.') {
                     sh 'sleep 30'
-                	sh 'docker stop APP'
+                	sh 'docker stop APP && docker rm APP'
                 }
             }
         }
