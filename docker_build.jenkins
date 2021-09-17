@@ -50,7 +50,7 @@ pipeline {
             steps { 
                 echo " ============== start deploying container =================="
                 dir ('.') {
-                	sh 'docker run -p 8000:8000 yesinaleksey/weatherapp:v1'
+                	sh 'docker run -d yesinaleksey/weatherapp:v1'
                 }
             }
         }
