@@ -50,7 +50,7 @@ pipeline {
             steps { 
                 echo " ============== start deploying container =================="
                 dir ('.') {
-                	sh 'docker run -d yesinaleksey/weatherapp:v1'
+                	sh 'docker run -p 8000:8000 --name APP -d yesinaleksey/weatherapp:v1'
                 }
             }
         }
@@ -63,7 +63,7 @@ pipeline {
                 echo " ============== start stoping container =================="
                 dir ('.') {
                     sh 'sleep 30'
-                	sh 'docker stop yesinaleksey/weatherapp:v1'
+                	sh 'docker stop APP'
                 }
             }
         }
