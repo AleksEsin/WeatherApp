@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage("docker login") {
             agent {
-                label "develop"
+                label "dev"
             }
             steps {
                 echo " ============== start docker login =================="
@@ -21,37 +21,36 @@ pipeline {
         
         stage("create docker image") {
             agent {
-                label "develop"
+                label "dev"
             }
             steps {
                 echo " ============== start building image =================="
                 dir ('.') {
-                	sh 'sudo docker build -t yesinaleksey/weatherapp:v1 .'
+                	sh 'docker build -t yesinaleksey/weatherapp:v1 .'
                 }
             }
         }
         
         stage("docker push") {
             agent {
-                label "production"
+                label "prod"
             }
             steps {
                 echo " ============== start pushing container =================="
                 dir ('.') {
-                	sh 'sudo docker push yesinaleksey/weatherapp:v1'
+                	sh 'docker push yesinaleksey/weatherapp:v1'
                 }
             }
         }
         
         stage("deploy docker container") {
             agent {
-                label "production"
+                label "prod"
             }
-            steps {
-                unstash 'source'
+            steps { 
                 echo " ============== start deploying container =================="
                 dir ('.') {
-                	sh 'sudo docker run -p 8000:8000 yesinaleksey/weatherapp:v1'
+                	sh 'docker run -p 8000:8000 yesinaleksey/weatherapp:v1'
                 }
             }
         }
