@@ -1,0 +1,35 @@
+#!groovy
+// Run docker build
+properties([disableConcurrentBuilds()])
+
+pipeline {
+    agent any
+    tools {
+        terraform 'terraform'
+    }
+    stages {
+       stage("terraform init") {
+          agent {
+              label "dev"
+          }
+          steps {
+              echo " ============== terraform init =================="
+              dir ('.') {
+                sh 'terraform init'
+              }
+          }
+       }
+
+       stage("terraform apply") {
+          agent {
+              label "dev"
+          }
+          steps {
+              echo " ============== terraform apply =================="
+              dir ('.') {
+                sh 'terraform apply --auto-approve'
+              }
+          }
+       }
+    }
+}
