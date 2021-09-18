@@ -12,7 +12,7 @@ pipeline {
           steps {
               echo " ============== terraform init =================="
               dir ('.') {
-                sh 'terraform init'
+                sh 'sudo /usr/bin/terraform init'
               }
           }
        }
