@@ -4,26 +4,16 @@ properties([disableConcurrentBuilds()])
 
 pipeline {
     agent any
-    tools {
-        terraform 'terraform'
-    }
     stages {
-       stage("terraform init") {
-          steps {
-              echo " ============== terraform init =================="
-              dir ('.') {
-                sh 'sudo /usr/bin/terraform init'
+        stage('Hello') {
+            steps {
+              withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'terraform-aws-creds', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                sh '''
+                    aws --version
+                    terraform init
+                '''
               }
-          }
-       }
-
-       stage("terraform apply") {
-          steps {
-              echo " ============== terraform apply =================="
-              dir ('.') {
-                sh 'terraform apply --auto-approve'
-              }
-          }
-       }
+            }
+        }
     }
 }
