@@ -23,7 +23,7 @@ echo \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update -y
 sudo apt-get install docker-ce docker-ce-cli containerd.io -y
-sudo docker run -p 8000:8000 -d yesinaleksey/weatherapp:v1
+sudo docker run -p 8000:8000 -d yesinaleksey/weatherapp:v2
 EOF
 
   tags = {
