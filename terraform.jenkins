@@ -15,9 +15,7 @@ pipeline {
               }
             }
         }
-    }
-    
-    stages {
+        
         stage('APPLY') {
             steps {
               withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'terraform-aws-creds', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
