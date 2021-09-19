@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage("docker login") {
             agent {
-                label "dev"
+                label "development"
             }
             steps {
                 echo " ============== start docker login =================="
@@ -24,41 +24,70 @@ pipeline {
 
         stage("create docker image") {
             agent {
-                label "dev"
+                label "development"
             }
             steps {
                 echo " ============== start building image =================="
                 dir ('.') {
-                	sh 'docker build -t yesinaleksey/weatherapp:v2 .'
+                	sh 'docker build -t yesinaleksey/weatherapp:v1 .'
                 }
             }
         }
 
         stage("docker push") {
             agent {
-                label "dev"
+                label "development"
             }
             steps {
                 echo "============== start pushing container =================="
                 dir ('.') {
-                	sh 'docker push yesinaleksey/weatherapp:v2'
+                	sh 'docker push yesinaleksey/weatherapp:v1'
                 }
                 echo "============== start removing container from dev.server =================="
                 dir ('.') {
-                  sh 'docker rmi yesinaleksey/weatherapp:v2'
+                  sh 'docker rmi yesinaleksey/weatherapp:v1'
                 }
             }
         }
-        
-        stage("terraform") {
+
+        stage("testing") {
             agent {
-                label "dev"
+                label "testing"
             }
             steps {
-                echo " ============== start building image =================="
+                echo " ============== testing =================="
                 dir ('.') {
-                	sh 'docker build -t yesinaleksey/weatherapp:v2 .'
+                	sh 'ls -la'
+                  sh 'df -h'
                 }
+            }
+        }
+
+        stage('terraform init') {
+            agent {
+                label "master"
+            }
+            steps {
+              echo "============== terraform init =================="
+              withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'terraform-aws-creds', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                sh '''
+                    terraform init
+                '''
+              }
+            }
+        }
+
+        stage('terraform apply') {
+            agent {
+                label "master"
+            }
+            steps {
+              echo "============== terraform apply =================="
+              withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'terraform-aws-creds', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                sh '''
+                    terraform apply -auto-approve
+                '''
+              }
             }
         }
     }
