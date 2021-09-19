@@ -5,12 +5,24 @@ properties([disableConcurrentBuilds()])
 pipeline {
     agent any
     stages {
-        stage('Hello') {
+        stage('INIT') {
             steps {
               withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'terraform-aws-creds', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                 sh '''
                     aws --version
                     terraform init
+                '''
+              }
+            }
+        }
+    }
+    
+    stages {
+        stage('APPLY') {
+            steps {
+              withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'terraform-aws-creds', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                sh '''
+                    terraform apply -auto-approve
                 '''
               }
             }
