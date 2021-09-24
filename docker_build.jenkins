@@ -47,19 +47,6 @@ pipeline {
             }
         }
 
-        stage("testing") {
-            agent {
-                label "testing"
-            }
-            steps {
-                echo " ============== testing =================="
-                dir ('.') {
-                	sh 'ls -la'
-                  sh 'df -h'
-                }
-            }
-        }
-
         stage('terraform init') {
             agent {
                 label "master"
