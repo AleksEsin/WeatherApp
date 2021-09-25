@@ -1,3 +1,15 @@
+#!groovy
+// Run docker build
+properties([disableConcurrentBuilds()])
+
+pipeline {
+    agent {
+        label "dev"
+    }
+    tools {
+        terraform 'terraform'
+    }
+    stages {
         stage('terraform init') {
             agent {
                 label "dev"
@@ -21,3 +33,5 @@
               }
             }
         }
+     }
+ }
