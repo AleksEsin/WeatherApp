@@ -5,7 +5,7 @@ provider "aws" {
 resource "aws_instance" "prod" {
   ami                    = "ami-03d5c68bab01f3496" # Ubuntu_20.04
   instance_type          = "t2.micro"
-  vpc_security_group_ids = [aws_security_group.prod.id]
+  vpc_security_group_ids = [ aws_security_group.prod.id ]
   user_data              = <<EOF
 #!/bin/bash
 sudo apt update -y
