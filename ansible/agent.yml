@@ -31,6 +31,7 @@
 
     - name: Add remote "ubuntu" user to "docker" group
       user:
+        become: True
         name: ubuntu
         group: docker
         append: yes
