@@ -6,6 +6,9 @@ pipeline {
     agent {
         label "dev"
     }
+    tools {
+        terraform 'terraform'
+    }
     stages {
         stage("ansible playbook") {
             agent {
