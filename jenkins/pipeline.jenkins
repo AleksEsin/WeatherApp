@@ -13,7 +13,7 @@ pipeline {
             }
             steps {
                 echo " ============== start playbook =================="
-                ansiblePlaybook credentialsId: 'private-key-ansible', installation: 'ansible-2.9.6', inventory: 'ansible/inventory', playbook: 'ansible/agent.yml'
+                ansiblePlaybook credentialsId: 'ssh-key-oregon', installation: 'ansible-2.9.6', inventory: 'ansible/inventory', playbook: 'ansible/agent.yml'
                 }
         }     
         
