@@ -10,6 +10,15 @@ pipeline {
         terraform 'terraform'
     }
     stages {
+        stage('clean workspace')
+            agent {
+                label "dev"
+            }
+            steps {
+            cleanWs()
+            }
+        }
+        
         stage("ansible playbook") {
             agent {
                 label "dev"
