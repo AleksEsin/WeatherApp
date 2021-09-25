@@ -30,7 +30,7 @@
       apt: update_cache=yes name=docker-ce state=latest
 
     - name: Add remote "ubuntu" user to "docker" group
-      become: True
+      become: false
       user:
         name: ubuntu
         group: docker
