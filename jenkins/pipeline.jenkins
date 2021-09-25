@@ -4,12 +4,23 @@ properties([disableConcurrentBuilds()])
 
 pipeline {
     agent {
-        label "development"
+        label "dev"
     }
     stages {
+        stage("ansible playbook") {
+            agent {
+                label "dev"
+            }
+            steps {
+                echo " ============== start playbook =================="
+                ansiblePlaybook credentialsId: 'private-key-ansible', installation: 'ansible-2.9.6', inventory: 'ansible/inventory', playbook: 'ansible/agent.yml'
+                }
+            }
+        }        
+        
         stage("docker login") {
             agent {
-                label "development"
+                label "dev"
             }
             steps {
                 echo " ============== start docker login =================="
@@ -21,7 +32,7 @@ pipeline {
 
         stage("create docker image") {
             agent {
-                label "development"
+                label "dev"
             }
             steps {
                 echo " ============== start building image =================="
@@ -33,7 +44,7 @@ pipeline {
 
         stage("docker push") {
             agent {
-                label "development"
+                label "dev"
             }
             steps {
                 echo "============== start pushing container =================="
@@ -49,7 +60,7 @@ pipeline {
 
         stage('terraform init') {
             agent {
-                label "master"
+                label "dev"
             }
             steps {
               echo "============== terraform init =================="
@@ -63,7 +74,7 @@ pipeline {
 
         stage('terraform apply') {
             agent {
-                label "master"
+                label "dev"
             }
             steps {
               echo "============== terraform apply =================="
