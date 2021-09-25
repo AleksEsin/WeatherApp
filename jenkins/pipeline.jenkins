@@ -10,7 +10,7 @@ pipeline {
         terraform 'terraform'
     }
     stages {
-        stage('clean workspace')
+        stage('clean workspace') {
             agent {
                 label "dev"
             }
@@ -18,7 +18,7 @@ pipeline {
                 cleanWs()
             }
         }
-        
+
         stage("ansible playbook") {
             agent {
                 label "dev"
@@ -27,8 +27,8 @@ pipeline {
                 echo " ============== start playbook =================="
                 ansiblePlaybook credentialsId: 'ssh-key-oregon', disableHostKeyChecking: true, installation: 'ansible-2.9.6', inventory: 'ansible/inventory', playbook: 'ansible/agent.yml'
             }
-        }     
-        
+        }
+
         stage("docker login") {
             agent {
                 label "dev"
@@ -95,3 +95,4 @@ pipeline {
             }
         }
     }
+}
