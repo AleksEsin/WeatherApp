@@ -15,7 +15,7 @@ pipeline {
                 label "dev"
             }
             steps {
-            cleanWs()
+                cleanWs()
             }
         }
         
@@ -26,7 +26,7 @@ pipeline {
             steps {
                 echo " ============== start playbook =================="
                 ansiblePlaybook credentialsId: 'ssh-key-oregon', disableHostKeyChecking: true, installation: 'ansible-2.9.6', inventory: 'ansible/inventory', playbook: 'ansible/agent.yml'
-                }
+            }
         }     
         
         stage("docker login") {
@@ -95,4 +95,3 @@ pipeline {
             }
         }
     }
-}
