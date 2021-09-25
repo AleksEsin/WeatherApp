@@ -28,9 +28,13 @@
 
     - name: Update apt and install docker-ce
       apt: update_cache=yes name=docker-ce state=latest
+      
+    - name: Create "docker" group
+      group:
+         name: docker
+         state: present
 
     - name: Add remote "ubuntu" user to "docker" group
-      become: false
       user:
         name: ubuntu
         group: docker
