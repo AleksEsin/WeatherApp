@@ -2,6 +2,10 @@ provider "aws" {
   region = "us-west-2"
 }
 
+resource "aws_eip" "static_ip" {
+  instance = [aws_instance.prod.id]
+}
+
 resource "aws_instance" "prod" {
   ami                    = "ami-03d5c68bab01f3496" # Ubuntu_20.04
   instance_type          = "t2.micro"
@@ -27,6 +31,10 @@ EOF
   tags = {
     Name = "production"
   }
+  
+  lifecycle {
+     create_before_destroy = true
+  }
 }
 
 
@@ -49,6 +57,6 @@ resource "aws_security_group" "prod" {
   }
 }
 
-output "dev_public_ip" {
+output "prod_public_ip" {
   value = aws_instance.prod.public_ip
 }
