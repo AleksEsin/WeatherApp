@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_eip" "static_ip" {
-  instance = [aws_instance.prod.id]
+  instance = aws_instance.prod.id
 }
 
 resource "aws_instance" "prod" {
