@@ -51,10 +51,6 @@ resource "aws_security_group" "prod" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 output "dev_public_ip" {
