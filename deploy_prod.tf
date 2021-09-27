@@ -27,6 +27,10 @@ EOF
   tags = {
     Name = "production"
   }
+  
+  lifecycle {
+    ignore_changes = ["vpc_security_group_ids"]
+  }
 }
 
 
