@@ -21,7 +21,7 @@ t<!DOCTYPE html>
         <h1>Weather in your city</h1>
         <form action="" method="post">
           {% csrf_token %}
-          <label for="city">Город</label>
+          <label for="city">City</label>
           {{ form.name }}
           <input type="submit" name="send" value="Search" class="mt-2 btn btn-danger">
         </form>
